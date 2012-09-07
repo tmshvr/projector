@@ -1,0 +1,81 @@
+<!-- Project: Projector     Thomas Shaver       Term 1209 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta keywords="list, project, workflow" />
+    <meta name="description" content="A web-app for programming project management." />
+    <meta name="author" content="Thomas Shaver" />
+    <meta robots="follow, index" />
+    <!-- Make the page mobile friendly -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="target-densitydpi=device-dpi" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <!-- End mobile friendly -->
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <title>AddItem</title>
+</head>
+<body>
+    <article>
+        <section>
+            <hgroup>
+                <header>
+                    <h1>Projector</h1>
+                    <h2>Add a file to a project, view project files, or delete all projects.</h2>
+                </header>
+            </hgroup>
+        </section>
+        <section>
+            <a href="#" id="load">Show Data</a>
+            <a href="#" id="clear">Clear Data</a>
+        </section>
+        <section>
+            <form id="data" method="post" action="#" onsubmit="">
+                <ul>
+                    <li>
+                        <fieldset>
+                            <legend>File Info:</legend>
+                            <label for="project">Project</label>
+                            <input type="text" id="project" />
+                            <label for="filename">Filename</label>
+                            <input type="text" id="filename" />
+                            <label for="author">Author</label>
+                            <input type="text" name="author" id="author" required="required" value="tAG"/>
+                            <label for="content">Description</label>
+                            <textarea id="description" name="description" required="required">Blah, blah, blah.</textarea>
+                        </fieldset>
+                    </li>
+                    <li>
+                        <fieldset>
+                            <legend>Code:</legend>
+                            <label for="type">Client</label>
+                            <input type="radio" id="client" name="type" value="client" checked />
+                            <label for="type">Server</label>
+                            <input type="radio" id="server" name="type" value="server" />
+                            <label for="media">Media</label>
+                            <input type="radio" id="media" name="type" value="media" />
+                            <label for="filetype" id="typeLabel">Type</label>
+                        </fieldset>
+                    </li>
+                    <li>
+                        <fieldset>
+                            <legend>Importance:</legend>
+                            <label for="due">Finish By</label>
+                            <input type="date" id="due" name="due" required="required" />
+                            <label for="priority">Priority</label>
+                            <input type="range" min="1" max="3" step="1" value="1" id="priority" name="priority" />
+                            <input type="hidden" id="created" id="created" name="created" />
+                        </fieldset>
+                    </li>
+                    <li>
+                        <input type="submit" id="add" value="Add" />
+                    </li>
+                </ul>
+            </form>
+        </section>
+    </article>
+    <script language="javascript" src="../js/main.js" type="text/javascript"></script>
+    <script language="collapsibleList.js" src="../js/collapsibleList.js" type="text/javascript"></script>
+</body>
+</html>
