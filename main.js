@@ -23,10 +23,22 @@ window.addEventListener( "DOMContentLoaded", function() {
         cb.appendChild( selectEl );
     };
 
+    function getDynamicItems() {
+        var radios = document.forms[ 0 ].type;
+        for( var i=0; i < radios.length; i++ ) {
+            if( radios[ i ].checked === true ) {
+                typeValue = radios[ i ].value;
+            };
+        };
+        var comboBox = $( "language" );
+        languageValue = comboBox.options[ comboBox.selectedIndex ].value;
+    };
+
     // Store form data in localStorage.
     function storeData() {
         var item = {},
         key = $( 'author' ).value;
+        getDynamicItems();
         item.project = [ "project", $( 'project' ).value ];
         item.filename = [ "filename", $( 'filename' ).value ];
         item.author = [ "author", $( 'author' ).value ];
@@ -49,6 +61,14 @@ window.addEventListener( "DOMContentLoaded", function() {
             localStorage.clear(); // but if we clear it while it's non-existent, it will be created.
         };
     };
+
+    function initPage() {
+        // Dynamically set start and due date in HTML.
+        var started = new Date();
+        $( 'due' ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
+        $( 'created' ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
+    };
+
 
     // Global variables.
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ],
