@@ -165,6 +165,8 @@ window.addEventListener( "DOMContentLoaded", function() {
         var started = new Date();
         $( 'due' ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
         $( 'created' ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
+        // Hide the back button.
+        $( 'back' ).style.display = "none";
     };
 
 
