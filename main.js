@@ -1,7 +1,6 @@
 // Project: Projector
 // Thomas Shaver
 // Term 1209
-
 window.addEventListener( "DOMContentLoaded", function() {
     function $( x ) { // Get element by ID.
         return document.getElementById( x );
@@ -23,16 +22,14 @@ window.addEventListener( "DOMContentLoaded", function() {
         cb.appendChild( selectEl );
     };
 
-
     // Global variables.
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ];
 
-
-    // Init dynamic items.
+    // Create the combobox/select element.
     makeComboBox( "typeLabel", fileTypes, "filetype" );
 
-    // Setup event listeners.
+    // Setup event listeners for the links and Save Data button.
     $( 'load'  ).addEventListener( "click", loadData, false );
-    $( 'add'   ).addEventListener( "click", storeData, false );
+    $( 'save'   ).addEventListener( "click", storeData, false );
     $( 'clear' ).addEventListener( "click", clearData, false );
 });
