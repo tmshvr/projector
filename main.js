@@ -113,9 +113,45 @@ window.addEventListener( "DOMContentLoaded", function() {
         localStorage[ key ] = JSON.stringify( item );
     };
 
+    function loadData() {
+        var dA = $( 'displayArea' );
+        if( dA ) {
+            dA.parentNode.removeChild( dA );
+        };
+        var makeDiv = document.createElement( 'div' );
+        makeDiv.setAttribute( "id", "displayArea" );
+        var makeList = document.createElement( 'ul' );
+        makeDiv.appendChild( makeList );
+        document.body.appendChild( makeDiv );
+        for( var i = 0, len = localStorage.length; i < len; i++ ) {
+            var makeLi = document.createElement( 'li' );
+            makeList.appendChild( makeLi );
+            var key = localStorage.key( i );
+            var value = localStorage.getItem( key );
+            var obj = JSON.parse( value );
+            var makeSubList = document.createElement( 'ul' );
+            makeLi.appendChild( makeSubList );
+            for( var n in obj ) {
+                var makeSubLi = document.createElement( 'li' );
+                makeSubList.appendChild( makeSubLi );
+                var optSubText = toTitleCase( obj[ n ][ 0 ] ) + ": " + obj[ n ][ 1 ];
+                makeSubLi.innerHTML = optSubText;
+            };
+        };
+        $( 'formarea' ).style.display = "none";
+        $( 'load' ).style.display = "none";
+        $( 'back' ).style.display = "inline";
+    };
+
     function clearData() {
         localStorage.clear();
         alert( localStorage.length === 0 ? "Cleared localStorage." : "Something's still in localStorage." );
+    };
+
+    function goBack() {
+        $( 'formarea' ).style.display = "";
+        $( 'load' ).style.display = "";
+        $( 'back' ).style.display = "none";
     };
 
     function initStorage() { // Hack for bug in Chrome/Safari:
@@ -139,9 +175,11 @@ window.addEventListener( "DOMContentLoaded", function() {
 
     // Create the combobox/select element.
     initStorage();
+    initPage();
     makeComboBox( "typeLabel", fileTypes, "filetype" );
 
     // Setup event listeners for the links and Save Data button.
+    $( 'back' ).addEventListener( "click", goBack, false );
     $( 'load'  ).addEventListener( "click", loadData, false );
     $( 'save'   ).addEventListener( "click", storeData, false );
     $( 'clear' ).addEventListener( "click", clearData, false );
