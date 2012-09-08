@@ -1,3 +1,28 @@
 /* Project: Projector */
 /* Thomas Shaver */
 /* Term 1209 */
+body {
+    background: #DBDFDD;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    color: #707070;
+    font-size: 0.95em;
+}
+
+fieldset {
+    background: #EBEFED;
+}
+
+range {
+    width: 100%
+}
+
+ul {
+    line-height: 0.94em;
+}
