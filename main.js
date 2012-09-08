@@ -159,20 +159,11 @@ window.addEventListener( "DOMContentLoaded", function() {
         alert( localStorage.length === 0 ? "Cleared localStorage." : "Something's still in localStorage." );
     };
 
-    function initPage() {
-        // Dynamically set start and due date in HTML.
-        var started = new Date();
-        $( 'due' ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
-        $( 'created' ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
-        // Hide the back button.
-        $( 'back' ).style.display = 'none';
-    };
-
     function goBack() {
         var dA = $( 'displayArea' );
         $( 'formarea' ).style.display = "";
         $( 'load' ).style.display = "";
-        $( 'back' ).style.display = 'none';
+        $( 'back' ).style.display = "none";
         if( dA ) {
             dA.parentNode.removeChild( dA );
         };
@@ -187,13 +178,21 @@ window.addEventListener( "DOMContentLoaded", function() {
     // Global variables.
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ],
         typeValue,
-        filetypeValue;
+        filetypeValue,
+        started = new Date();
 
     // Create the combobox/select element.
-    initPage();
-    initStorage();
     makeComboBox( "typeLabel", fileTypes, "filetype" );
 
+    // Let the hack do it's work.
+    initStorage();
+
+    // Initialize the due and created dates.
+    $( 'due' ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
+    $( 'created' ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
+
+    // Hide the back link.
+    $( 'back' ).style.display = "none";
     // Setup event listeners for the links and Save Data button.
     $( 'back' ).addEventListener( "click", goBack, false );
     $( 'load'  ).addEventListener( "click", loadData, false );
