@@ -117,9 +117,11 @@ window.addEventListener( "DOMContentLoaded", function() {
             value = localStorage.getItem( key );
             obj = JSON.parse( value );
             makeSubList = document.createElement( 'ul' );
+            makeSubList.setAttribute( "class", "listing" );
             makeLi.appendChild( makeSubList );
             for( n in obj ) {
                 makeSubLi = document.createElement( 'li' );
+                makeSubLi.setAttribute( "class", "item" );
                 makeSubList.appendChild( makeSubLi );
                 optSubText = toTitleCase( obj[ n ][ 0 ] ) + ": " + obj[ n ][ 1 ];
                 makeSubLi.innerHTML = optSubText;

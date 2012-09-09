@@ -2,27 +2,52 @@
 /* Thomas Shaver */
 /* Term 1209 */
 body {
-    background: #DBDFDD;
+    background: #EBEFED;
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
+    font-size: 1.6em;
 }
 
 h2 {
-    text-align: center;
-    color: #707070;
-    font-size: 0.95em;
+    font-size: 1.1em;
+    line-height: 1.1em;
+}
+
+a {
+    color: #9900CC;
 }
 
 fieldset {
-    background: #EBEFED;
-}
-
-range {
-    width: 100%
+    background: #DBDFDD;
+    border-color: #FBFB00;
+    width: 13em;
+    margin-left: -1.4em;
 }
 
 ul {
     line-height: 0.94em;
+    margin-top: 0.5em;
+    margin-bottom: 0.75em;
+    list-style: none;
+}
+
+.chunk {
+    width: 15em;
+    text-align: center;
+    margin-left: 1em;
+}
+
+.listing {
+    list-style: disc;
+    text-align: left;
+    padding: 0.5em;
+}
+
+.item {
+    color: #606060;
+    list-style: none;
+    line-height: 0.9em;
+    margin-bottom: 0.2em;
 }
