@@ -106,18 +106,20 @@ window.addEventListener( "DOMContentLoaded", function() {
             dA.parentNode.removeChild( dA );
         };
         makeDiv = document.createElement( 'div' );
-        makeDiv.setAttribute( "id", "displayArea" );
+        makeDiv.setAttribute( "id", "displayArea" );s
         makeList = document.createElement( 'ul' );
         makeDiv.appendChild( makeList );
         document.body.appendChild( makeDiv );
         for( i = 0, len = localStorage.length; i < len; i++ ) {
             makeLi = document.createElement( 'li' );
             makeList.appendChild( makeLi );
+            linksLi = document.createElement( 'ul' );
             key = localStorage.key( i );
             value = localStorage.getItem( key );
             obj = JSON.parse( value );
             makeSubList = document.createElement( 'ul' );
             makeSubList.setAttribute( "class", "listing" );
+            makeSubList.appendChild( linksLi );
             makeLi.appendChild( makeSubList );
             for( n in obj ) {
                 makeSubLi = document.createElement( 'li' );
@@ -126,6 +128,7 @@ window.addEventListener( "DOMContentLoaded", function() {
                 optSubText = toTitleCase( obj[ n ][ 0 ] ) + ": " + obj[ n ][ 1 ];
                 makeSubLi.innerHTML = optSubText;
             };
+            makeItemLinks( localStorage.key(i), linksLi );
         };
         $( 'formarea' ).style.display = "none";
         $( 'load' ).style.display = "none";
@@ -135,7 +138,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     // Store form data in localStorage.
     function storeData() {
         var item = {}, key, isValid;
-            getDynamicItems();
+            getDynamicItems();  
             key = $( 'project' ).value + "\/" + $( 'filename' ).value;
             item.project = [ "project", $( 'project' ).value ];
             item.filename = [ "filename", $( 'filename' ).value ];
@@ -154,6 +157,29 @@ window.addEventListener( "DOMContentLoaded", function() {
         else {
             alert( isValid );
         };
+    };
+
+    function makeItemLinks( key, linksLi ) {
+        // Create a control to edit an item from the localStorage list.
+        var editLink = document.createElement( "a" );
+        editLink.href = "#";
+        editLink.key = key;
+        var editText = "Edit File";
+        editLink.addEventListener( "click", editItem );
+        editLink.innerHTML = editText;
+        linksLi.appendChild( editLink );
+
+        
+        var breakTag = document.createElement( 'br' );
+
+        // Create a control to delete an item from the localStorage list.
+        var deleteLink = document.createElement( "a" );
+        deleteLink.href = "#";
+        deleteLink.key = key;
+        var deleteText = "Edit File";
+        deleteLink.addEventListener( "click", editItem );
+        deleteLink.innerHTML = deleteText;
+        linksLi.appendChild( deleteLink );
     };
 
     function clearData() {
