@@ -63,42 +63,6 @@ window.addEventListener( "DOMContentLoaded", function() {
         return [ Math.floor( hours ), Math.floor( days )];
     };
 
-    function validateData( jsonObject ) {
-        var valid = "", dd;
-        if( jsonObject.project === "" || jsonObject.project === undefined ) {
-            valid = "project is invalid: " + jsonObject.project;
-        };
-        if( jsonObject.filename === "" || jsonObject.filename === undefined ) {
-            valid = "filename is invalid: " + jsonObject.filename;
-        };
-        if( jsonObject.author === "" || jsonObject.author === undefined ) {
-            valid = "author is invalid: " + jsonObject.author;
-        };
-        if( jsonObject.description === "" || jsonObject.description === undefined ) {
-            valid = "description is invalid: " + jsonObject.description;
-        };
-        if( jsonObject.type === "" || jsonObject.type === undefined ) {
-            valid = "type is invalid: " + jsonObject.type;
-        };
-        if( jsonObject.filetype === "" || jsonObject.filetype === undefined ) {
-            valid = "filetype is invalid: " + jsonObject.filetype;
-        };
-        if( jsonObject.due === "" || jsonObject.due === undefined ) {
-            valid = "due date is invalid: " + jsonObject.due;
-        };
-        if( jsonObject.priority === "" || jsonObject.priority === undefined ) {
-            valid = "priority is invalid: " + jsonObject.priority;
-        };
-        if( jsonObject.created === "" || jsonObject.created === undefined ) {
-            valid = "created is invalid: " + jsonObject.created;
-        };
-        dd = dateDifference( jsonObject.due, jsonObject.created );
-        if( dd[ 0 ] < 0 || dd[ 1 ] < 0 ) {
-            valid = "Due date is before start date.";
-        };
-        return valid;
-    };
-
     function loadData() {
         var dA = $( 'displayArea' ),
             makeDiv, makeList, makeLi, key, value, obj, makeSubList, makeSubLi, optSubText, len, i, n;
@@ -136,10 +100,17 @@ window.addEventListener( "DOMContentLoaded", function() {
     };
 
     // Store form data in localStorage.
-    function storeData() {
-        var item = {}, key, isValid;
-            getDynamicItems();  
-            key = $( 'project' ).value + "\/" + $( 'filename' ).value;
+    function storeData( key ) {
+        var item = {}, id, isValid;
+        if( ! key ) { // If there is no key, make one.
+            id = $( 'project' ).value + "\/" + $( 'filename' ).value;
+        }
+        else {
+            // This item is being edited, and will be saved with the key passed in from validate.
+            id = key;
+        };
+            getDynamicItems();
+            
             item.project = [ "project", $( 'project' ).value ];
             item.filename = [ "filename", $( 'filename' ).value ];
             item.author = [ "author", $( 'author' ).value ];
@@ -152,7 +123,7 @@ window.addEventListener( "DOMContentLoaded", function() {
         isValid = validateData( item );
         // If the data is not valid, it shouldn't be stored.        
         if( isValid === "" ) { // Found no errors in the data.
-            localStorage[ key ] = JSON.stringify( item );
+            localStorage[ id ] = JSON.stringify( item );
         }
         else {
             alert( isValid );
@@ -213,6 +184,90 @@ window.addEventListener( "DOMContentLoaded", function() {
         };
     };
 
+    function validate( e ) {
+        // Define the elements we ewant to change.
+        var valid,
+            messageAry = [],
+            // Define the elements we want to validate.
+            getType = $( 'project' ),
+            getFilename = $( 'filename' ),
+            getAuthor = $( 'author' ),
+            getDescription = $( 'description' ),
+            getType = $( 'type' ),
+            getFiletype = $( 'filetype' ),
+            getDue = $( 'due' ),
+            getPriority = $( 'priority' ),
+            getCreated = $( 'created' ),
+            // Make sure 
+            getDateDifference = dateDifference( getDue, getCreated );
+        // Reset the error messages.
+        errMsg.innerHTML = "";
+        // Reset the borders of the form input elements.
+        getType.style.border = "1px solid black";
+        getFilename.style.border = "1px solid black";
+        getAuthor.style.border = "1px solid black";
+        getDescription.style.border = "1px solid black";
+        getType.style.border = "1px solid black";
+        getFiletype.style.border = "1px solid black";
+        getDue.style.border = "1px solid black";
+        getPriority.style.border = "1px solid black";
+        getCreated.style.border = "1px solid black";
+
+        // Validate the elements.
+        if( getType.value === "" || getType.value === null ) {
+            getType.style.border = "1px solid red";
+            messageAry.push( "Provide a project name." );
+        };
+        if( getFilename.value === "" || getFilename.value === null ) {
+            getFilename.style.border = "1px solid red";
+            messageAry.push( "Provide a file name." );
+        };
+        if( getAuthor.value === "" || getAuthor.value === null ) {
+            getAuthor.style.border = "1px solid red";
+            messageAry.push( "Provide an author." );
+        };
+        if( getDescription.value === "" || getDescription.value === null ) {
+            getDescription.style.border = "1px solid red";
+            messageAry.push( "Provide a description of the file." );
+        };
+        if( getType.value === "" || getType.value === null ) {
+            getType.style.border = "1px solid red";
+            messageAry.push( "Select a media type for the file." );
+        };
+        if( getFiletype.value === "" || getFiletype.value === null ) {
+            getFiletype.style.border = "1px solid red";
+            messageAry.push( "Select a file type." );
+        };
+        if( getDue.value === "" || getDue.value === null ) {
+            getDue.style.border = "1px solid red";
+            messageAry.push( "Provide a due date for the file." );
+        };
+        if( getPriority.value === "" || getPriority.value === null ) {
+            getPriority.style.border = "1px solid red";
+            messageAry.push( "Select a priority for the file." );
+        };
+        if( getCreated.value === "" || getCreated.value === null ) {
+            getCreated.style.border = "1px solid red";
+            messageAry.push( "Provide a start date for the file." );
+        };
+        // If there were errors, display them on-screen.
+        if( messageAry.length > 0 ) {
+            for( var i = 0, j = messageAry.length; i < j; i++ ) {
+                var txt = document.createElement( 'li' );
+                txt.innerHTML = messageAry[ i ];
+                errMsg.appendChild( txt );
+            };
+            e.preventDefault();
+            return false;
+        }
+        else { // If there are no erros, then save the data.
+            // Store with the key passed to validate by the submit button, which was added to the
+            // submit button when the editItem function ran.
+            storeData( this.key );
+        };
+        return true;
+    };
+
     function clearData() {
         localStorage.clear();
         alert( localStorage.length === 0 ? "Cleared localStorage." : "Something's still in localStorage." );
@@ -235,6 +290,7 @@ window.addEventListener( "DOMContentLoaded", function() {
 
     function goBack() {
         var dA = $( 'displayArea' );
+        toggleControls( "on" );
         if( dA ) {
             dA.parentNode.removeChild( dA );
         };
@@ -250,7 +306,8 @@ window.addEventListener( "DOMContentLoaded", function() {
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ],
         typeValue,
         filetypeValue,
-        started = new Date();
+        started = new Date(),
+        errMsg = $( 'errors' );
 
     // Create the combobox/select element.
     makeComboBox( "typeLabel", fileTypes, "filetype" );
@@ -267,6 +324,6 @@ window.addEventListener( "DOMContentLoaded", function() {
     // Setup event listeners for the links and Save Data button.
     $( 'back' ).addEventListener( "click", goBack, false );
     $( 'load'  ).addEventListener( "click", loadData, false );
-    $( 'save'   ).addEventListener( "click", storeData, false );
+    $( 'save'   ).addEventListener( "click", validate, false );
     $( 'clear' ).addEventListener( "click", clearData, false );
 });
