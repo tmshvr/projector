@@ -182,16 +182,59 @@ window.addEventListener( "DOMContentLoaded", function() {
         linksLi.appendChild( deleteLink );
     };
 
+    function editItem() {
+        var value = localStorage.getItem( this.key ); // The .key value from the editLink that was clicked.
+        var item = JSON.parse( value );
+        // Show the form
+        toggleControls( "off" );
+
+        // Populate the form fields with data from localStorage.
+
+        // Remove the eventListener for the submit button.
+        $( 'save' ).removeEventListener( "click", validate );
+
+        // Change submit button value to Edit File.
+        $( 'save' ).value = "Save Edited";
+        var editSubmit = $( 'save' );
+        // Save the key est. in this function as a property of the submit button.
+        editSubmit.addEventListener( "click", validate );
+        editSubmit.key = this.key;
+    };
+
+    function deleteItem() {
+        var ask = confirm( "Are you sure?" );
+        if( ask) {
+            localStorage.deleteItem( this.key );
+            alert( this.key + " was deleted." );
+            window.location.reload();
+        }
+        else {
+            alert( this.key + " was not deleted." );
+        };
+    };
+
     function clearData() {
         localStorage.clear();
         alert( localStorage.length === 0 ? "Cleared localStorage." : "Something's still in localStorage." );
     };
 
+    function toggleControls( status ) {
+        switch( status ) {
+            case "off":
+                $( 'formarea' ).style.display = "none";
+                $( 'load' ).style.display = "none";
+                $( 'back' ).style.display = "";
+                break;
+            case "on":
+                $( 'formarea' ).style.display = "";
+                $( 'load' ).style.display = "";
+                $( 'back' ).style.display = "none";
+                break;
+        };
+    };
+
     function goBack() {
         var dA = $( 'displayArea' );
-        $( 'formarea' ).style.display = "";
-        $( 'load' ).style.display = "";
-        $( 'back' ).style.display = "none";
         if( dA ) {
             dA.parentNode.removeChild( dA );
         };
