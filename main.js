@@ -25,14 +25,14 @@ window.addEventListener( "DOMContentLoaded", function() {
     };
 
     function getDynamicItems() {
-        var radios = document.forms[ 0 ].type, i, comboBox;
+        var radios = document.forms[ 0 ].ctype, i, comboBox;
         for( i=0; i < radios.length; i++ ) {
             if( radios[ i ].checked === true ) {
-                typeValue = radios[ i ].value;
+                cTypeValue = radios[ i ].value;
             };
         };
         comboBox = $( "filetype" );
-        fileTypeValue = comboBox.options[ comboBox.selectedIndex ].value;
+        filetypeValue = comboBox.options[ comboBox.selectedIndex ].value;
     };
 
     // From SDI Project 4 library.
@@ -64,29 +64,30 @@ window.addEventListener( "DOMContentLoaded", function() {
     };
 
     function loadData() {
-        var dA = $( 'displayArea' ),
+        var dA = $( "displayArea" ),
             makeDiv, makeList, makeLi, key, value, obj, makeSubList, makeSubLi, optSubText, len, i, n;
         if( dA ) {
             dA.parentNode.removeChild( dA );
         };
-        makeDiv = document.createElement( 'div' );
-        makeDiv.setAttribute( "id", "displayArea" );s
-        makeList = document.createElement( 'ul' );
+        resetErrors();
+        makeDiv = document.createElement( "div" );
+        makeDiv.setAttribute( "id", "displayArea" );
+        makeList = document.createElement( "ul" );
         makeDiv.appendChild( makeList );
         document.body.appendChild( makeDiv );
         for( i = 0, len = localStorage.length; i < len; i++ ) {
-            makeLi = document.createElement( 'li' );
+            makeLi = document.createElement( "li" );
             makeList.appendChild( makeLi );
-            linksLi = document.createElement( 'ul' );
+            linksLi = document.createElement( "ul" );
             key = localStorage.key( i );
             value = localStorage.getItem( key );
             obj = JSON.parse( value );
-            makeSubList = document.createElement( 'ul' );
+            makeSubList = document.createElement( "ul" );
             makeSubList.setAttribute( "class", "listing" );
             makeSubList.appendChild( linksLi );
             makeLi.appendChild( makeSubList );
             for( n in obj ) {
-                makeSubLi = document.createElement( 'li' );
+                makeSubLi = document.createElement( "li" );
                 makeSubLi.setAttribute( "class", "item" );
                 makeSubList.appendChild( makeSubLi );
                 optSubText = toTitleCase( obj[ n ][ 0 ] ) + ": " + obj[ n ][ 1 ];
@@ -94,40 +95,32 @@ window.addEventListener( "DOMContentLoaded", function() {
             };
             makeItemLinks( localStorage.key(i), linksLi );
         };
-        $( 'formarea' ).style.display = "none";
-        $( 'load' ).style.display = "none";
-        $( 'back' ).style.display = "inline";
+        $( "formarea" ).style.display = "none";
+        $( "load" ).style.display = "none";
+        $( "back" ).style.display = "";
     };
 
     // Store form data in localStorage.
     function storeData( key ) {
         var item = {}, id, isValid;
         if( ! key ) { // If there is no key, make one.
-            id = $( 'project' ).value + "\/" + $( 'filename' ).value;
+            id = $( "project" ).value + "_" + $( "filename" ).value;
         }
         else {
             // This item is being edited, and will be saved with the key passed in from validate.
             id = key;
         };
-            getDynamicItems();
-            
-            item.project = [ "project", $( 'project' ).value ];
-            item.filename = [ "filename", $( 'filename' ).value ];
-            item.author = [ "author", $( 'author' ).value ];
-            item.description = [ "description", $( 'description' ).value ];
-            item.type = [ "type", typeValue ];
-            item.filetype = [ "filetype", filetypeValue ];
-            item.due = [ "due", $( 'due' ).value ];
-            item.priority = [ "priority", $( 'priority' ).value ];
-            item.created = [ "created", $( 'created' ).value ];
-        isValid = validateData( item );
-        // If the data is not valid, it shouldn't be stored.        
-        if( isValid === "" ) { // Found no errors in the data.
-            localStorage[ id ] = JSON.stringify( item );
-        }
-        else {
-            alert( isValid );
-        };
+        getDynamicItems();
+        item.project = [ "project", $( "project" ).value ];
+        item.filename = [ "filename", $( "filename" ).value ];
+        item.author = [ "author", $( "author" ).value ];
+        item.description = [ "description", $( "description" ).value ];
+        item.ctype = [ "ctype", cTypeValue ];
+        item.filetype = [ "filetype", filetypeValue ];
+        item.due = [ "due", $( "due" ).value ];
+        item.priority = [ "priority", $( "priority" ).value ];
+        item.created = [ "created", $( "created" ).value ];
+        localStorage[ id ] = JSON.stringify( item );
     };
 
     function makeItemLinks( key, linksLi ) {
@@ -140,15 +133,16 @@ window.addEventListener( "DOMContentLoaded", function() {
         editLink.innerHTML = editText;
         linksLi.appendChild( editLink );
 
-        
-        var breakTag = document.createElement( 'br' );
+        // Insert a break between the links so they won't be side-by-side.
+        var breakTag = document.createElement( "br" );
+        linksLi.appendChild( breakTag );
 
         // Create a control to delete an item from the localStorage list.
         var deleteLink = document.createElement( "a" );
         deleteLink.href = "#";
         deleteLink.key = key;
-        var deleteText = "Edit File";
-        deleteLink.addEventListener( "click", editItem );
+        var deleteText = "Delete File";
+        deleteLink.addEventListener( "click", deleteItem );
         deleteLink.innerHTML = deleteText;
         linksLi.appendChild( deleteLink );
     };
@@ -157,115 +151,131 @@ window.addEventListener( "DOMContentLoaded", function() {
         var value = localStorage.getItem( this.key ); // The .key value from the editLink that was clicked.
         var item = JSON.parse( value );
         // Show the form
-        toggleControls( "off" );
+        toggleControls( "on" );
 
         // Populate the form fields with data from localStorage.
-
-        // Remove the eventListener for the submit button.
-        $( 'save' ).removeEventListener( "click", validate );
+        $( "project" ).value = item.project[ 1 ];
+        $( "filename" ).value = item.filename[ 1 ];
+        $( "author" ).value = item.author[ 1 ];
+        $( "description" ).value = item.description[ 1 ];
+        $( item.ctype[ 1 ]).checked = true;
+        for( var i = 0, j = $( "filetype" ).options.length; i < j; i++ ) {
+            if( $( "filetype" ).options[ i ].value === item.filetype[ 1 ] ) {
+                $( "filetype" ).selectedIndex = i;
+                break;
+            };
+        };
+        $( "due" ).value = item.due[ 1 ];
+        $( "priority" ).value = item.priority[ 1 ];
+        $( "created" ).value = item.created[ 1 ];
 
         // Change submit button value to Edit File.
-        $( 'save' ).value = "Save Edited";
-        var editSubmit = $( 'save' );
+        $( "save" ).value = "Save";
+        var editSubmit = $( "save" );
         // Save the key est. in this function as a property of the submit button.
-        editSubmit.addEventListener( "click", validate );
         editSubmit.key = this.key;
     };
 
     function deleteItem() {
         var ask = confirm( "Are you sure?" );
-        if( ask) {
-            localStorage.deleteItem( this.key );
-            alert( this.key + " was deleted." );
-            window.location.reload();
+        if( ask ) {
+            alert( "Deleting " + this.key + "." );
+            localStorage.removeItem( this.key );
+            loadData();
         }
         else {
             alert( this.key + " was not deleted." );
         };
     };
 
-    function validate( e ) {
+    function validate() {
+        // Get the values of ctype and filetype 
         // Define the elements we ewant to change.
         var valid,
             messageAry = [],
             // Define the elements we want to validate.
-            getType = $( 'project' ),
-            getFilename = $( 'filename' ),
-            getAuthor = $( 'author' ),
-            getDescription = $( 'description' ),
-            getType = $( 'type' ),
-            getFiletype = $( 'filetype' ),
-            getDue = $( 'due' ),
-            getPriority = $( 'priority' ),
-            getCreated = $( 'created' ),
+            getProject = $( "project" ),
+            getFilename = $( "filename" ),
+            getAuthor = $( "author" ),
+            getDescription = $( "description" ),
+            getCType,
+            getFiletype = $( "filetype" ).options[ $( "filetype" ).selectedIndex ].value,
+            getDue = $( "due" ),
+            getPriority = $( "priority" ),
             // Make sure 
-            getDateDifference = dateDifference( getDue, getCreated );
-        // Reset the error messages.
-        errMsg.innerHTML = "";
-        // Reset the borders of the form input elements.
-        getType.style.border = "1px solid black";
-        getFilename.style.border = "1px solid black";
-        getAuthor.style.border = "1px solid black";
-        getDescription.style.border = "1px solid black";
-        getType.style.border = "1px solid black";
-        getFiletype.style.border = "1px solid black";
-        getDue.style.border = "1px solid black";
-        getPriority.style.border = "1px solid black";
-        getCreated.style.border = "1px solid black";
+            getDateDifference = dateDifference( getDue.value, $( "created" ).value ),
+            radios = document.forms[ 0 ].ctype;
+        // Get the selected value for ctype:
+        for( var i = 0, j = radios.length; i < j; i++ ) {
+            if( radios[ i ].checked === true ) {
+                getCType = radios[ i ];
+            };
+        };
+
+        // Reset the error messages, and form field borders.
+         resetErrors();
 
         // Validate the elements.
-        if( getType.value === "" || getType.value === null ) {
-            getType.style.border = "1px solid red";
+        // Make sure we don't save a project_filename key that will overwrite another, unless we're editing.
+        if( $( "save" ).value !== "Save" ) {
+            if( localStorage.getItem( getProject.value + "_" + getFilename.value )) {
+                getFilename.style.border = "1px solid red";
+                messageAry.push( getFilename.value + " already exists in " + getProject.value );
+            };
+        };
+        if( getProject.value === "" || getProject.value === undefined ) {
+            getProject.style.border = "1px solid red";
             messageAry.push( "Provide a project name." );
         };
-        if( getFilename.value === "" || getFilename.value === null ) {
+        if( getFilename.value === "" || getFilename.value === undefined ) {
             getFilename.style.border = "1px solid red";
             messageAry.push( "Provide a file name." );
         };
-        if( getAuthor.value === "" || getAuthor.value === null ) {
+        if( getAuthor.value === "" || getAuthor.value === undefined ) {
             getAuthor.style.border = "1px solid red";
             messageAry.push( "Provide an author." );
         };
-        if( getDescription.value === "" || getDescription.value === null ) {
+        if( getDescription.value === "" || getDescription.value === undefined ) {
             getDescription.style.border = "1px solid red";
             messageAry.push( "Provide a description of the file." );
         };
-        if( getType.value === "" || getType.value === null ) {
-            getType.style.border = "1px solid red";
-            messageAry.push( "Select a media type for the file." );
+        if( getCType.value === "client" && ( getFiletype === "PHP" || getFiletype === "MySQL" || getFiletype === "Audio" || getFiletype === "Video" || getFiletype === "Graphic" )) {
+            $( "filetype" ).style.border = "1px solid red";
+            messageAry.push( "Client code file type must be HTML, CSS, or JavaScript." );
         };
-        if( getFiletype.value === "" || getFiletype.value === null ) {
-            getFiletype.style.border = "1px solid red";
-            messageAry.push( "Select a file type." );
+        if( getCType.value === "server" && ( getFiletype === "HTML" || getFiletype === "CSS" || getFiletype === "JavaScript" || getFiletype === "Audio" || getFiletype === "Video" || getFiletype === "Graphic" )) {
+            $( "filetype" ).style.border = "1px solid red";
+            messageAry.push( "Server code file type must be PHP or MySQL." );
         };
-        if( getDue.value === "" || getDue.value === null ) {
+        if( getCType.value === "media" && ( getFiletype === "HTML" || getFiletype === "CSS" || getFiletype === "JavaScript" || getFiletype === "PHP" || getFiletype === "MySQL" )) {
+            $( "filetype" ).style.border = "1px solid red";
+            messageAry.push( "Media file type must be Audio, Video, or Graphic." );
+        };
+        if( getDue.value === "" || getDue.value === undefined ) {
             getDue.style.border = "1px solid red";
             messageAry.push( "Provide a due date for the file." );
         };
-        if( getPriority.value === "" || getPriority.value === null ) {
-            getPriority.style.border = "1px solid red";
-            messageAry.push( "Select a priority for the file." );
-        };
-        if( getCreated.value === "" || getCreated.value === null ) {
-            getCreated.style.border = "1px solid red";
-            messageAry.push( "Provide a start date for the file." );
+        if( getDateDifference[ 0 ] < 0 || getDateDifference[ 1 ] < 0 ||
+            getDateDifference[ 0 ] === undefined || getDateDifference[ 1 ] === undefined ) {
+            getDue.style.border = "1px solid red";
+            messageAry.push( "Due date must be after start date" );
         };
         // If there were errors, display them on-screen.
         if( messageAry.length > 0 ) {
             for( var i = 0, j = messageAry.length; i < j; i++ ) {
-                var txt = document.createElement( 'li' );
+                var txt = document.createElement( "li" );
                 txt.innerHTML = messageAry[ i ];
                 errMsg.appendChild( txt );
             };
-            e.preventDefault();
-            return false;
+            event.preventDefault();
         }
-        else { // If there are no erros, then save the data.
+        else { // If there are no errors, then save the data.
             // Store with the key passed to validate by the submit button, which was added to the
             // submit button when the editItem function ran.
             storeData( this.key );
         };
-        return true;
+        event.preventDefault();
+        return false;
     };
 
     function clearData() {
@@ -276,24 +286,38 @@ window.addEventListener( "DOMContentLoaded", function() {
     function toggleControls( status ) {
         switch( status ) {
             case "off":
-                $( 'formarea' ).style.display = "none";
-                $( 'load' ).style.display = "none";
-                $( 'back' ).style.display = "";
+                $( "formarea" ).style.display = "none";
+                $( "load" ).style.display = "none";
+                $( "back" ).style.display = "";
                 break;
             case "on":
-                $( 'formarea' ).style.display = "";
-                $( 'load' ).style.display = "";
-                $( 'back' ).style.display = "none";
+                $( "formarea" ).style.display = "";
+                $( "load" ).style.display = "";
+                $( "back" ).style.display = "none";
+                var dA = $( "displayArea" );
+                if( dA ) {
+                    dA.parentNode.removeChild( dA );
+                };
                 break;
         };
     };
 
-    function goBack() {
-        var dA = $( 'displayArea' );
-        toggleControls( "on" );
-        if( dA ) {
-            dA.parentNode.removeChild( dA );
+    function resetErrors() {
+        // Reset the error messages, if there are any.
+        if( errMsg.innerHTML !== "" ) {
+            errMsg.innerHTML = "";
+            $( "project" ).style.border = "1px solid black";
+            $( "filename" ).style.border = "1px solid black";
+            $( "author" ).style.border = "1px solid black";
+            $( "description" ).style.border = "1px solid black";
+            $( "filetype" ).style.border = "1px solid black";
+            $( "due" ).style.border = "1px solid black";
+            $( "priority" ).style.border = "1px solid black";
         };
+    };
+
+    function goBack() {
+        toggleControls( "on" );
     };
 
     function initStorage() { // Hack for bug in Chrome/Safari:
@@ -304,10 +328,10 @@ window.addEventListener( "DOMContentLoaded", function() {
 
     // Global variables.
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ],
-        typeValue,
+        cTypeValue,
         filetypeValue,
         started = new Date(),
-        errMsg = $( 'errors' );
+        errMsg = $( "errors" );
 
     // Create the combobox/select element.
     makeComboBox( "typeLabel", fileTypes, "filetype" );
@@ -316,14 +340,14 @@ window.addEventListener( "DOMContentLoaded", function() {
     initStorage();
 
     // Initialize the due and created dates.
-    $( 'due' ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
-    $( 'created' ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
+    $( "due" ).value = ( started.getMonth() + 2 ) + "/" + started.getDate() + "/" + started.getFullYear();
+    $( "created" ).value = ( started.getMonth() + 1 ) + "/" + started.getDate() + "/" + started.getFullYear();
 
     // Hide the back link.
-    $( 'back' ).style.display = "none";
+    $( "back" ).style.display = "none";
     // Setup event listeners for the links and Save Data button.
-    $( 'back' ).addEventListener( "click", goBack, false );
-    $( 'load'  ).addEventListener( "click", loadData, false );
-    $( 'save'   ).addEventListener( "click", validate, false );
-    $( 'clear' ).addEventListener( "click", clearData, false );
+    $( "back" ).addEventListener( "click", goBack );
+    $( "load" ).addEventListener( "click", loadData );
+    $( "save" ).addEventListener( "click", validate );
+    $( "clear" ).addEventListener( "click", clearData );
 });

@@ -32,8 +32,8 @@
             <a href="#" id="clear">Clear Data</a>
         </section>
         <section id="formarea">
-            <form id="data" method="post">
-                <ul id="errors"></ul>
+            <ul id="errors"></ul>
+            <form id="data" method="post" action="#">
                 <ul>
                     <li>
                         <fieldset>
@@ -50,13 +50,13 @@
                     </li>
                     <li>
                         <fieldset>
-                            <legend>Code:</legend>
+                            <legend>Content Type:</legend>
                             <label for="client">Client</label>
-                            <input type="radio" id="client" name="type" value="client" checked />
+                            <input type="radio" id="client" name="ctype" value="client" checked />
                             <label for="server">Server</label>
-                            <input type="radio" id="server" name="type" value="server" />
+                            <input type="radio" id="server" name="ctype" value="server" />
                             <label for="media">Media</label>
-                            <input type="radio" id="media" name="type" value="media" />
+                            <input type="radio" id="media" name="ctype" value="media" />
                             <label for="filetype" id="typeLabel">Type</label>
                         </fieldset>
                     </li>
