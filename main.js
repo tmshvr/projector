@@ -63,11 +63,33 @@ window.addEventListener( "DOMContentLoaded", function() {
         return [ Math.floor( hours ), Math.floor( days )];
     };
 
+    function autoFillData() {
+        // Load data from the json object in json.js and lod it into localStorage.
+        for( var n in json ) {
+            var id = json[ n ].project[ 1 ] + "_" + json[ n ].filename[ 1 ];
+            localStorage.setItem( id, JSON.stringify( json[ n ]));
+        };
+    };
+
+    function getImage( makeSubList, catName ) {
+        var imgLi = document.createElement( "li" );
+        makeSubList.appendChild( imgLi );
+        var newImg = document.createElement( "img" );
+        newImg.setAttribute( "src", "images/" + catName.toLowerCase() + "Icon.png" );
+        newImg.setAttribute( "width", "80px" );
+        newImg.setAttribute( "height", "auto" );
+        imgLi.appendChild( newImg );
+    };
+
     function loadData() {
         var dA = $( "displayArea" ),
             makeDiv, makeList, makeLi, key, value, obj, makeSubList, makeSubLi, optSubText, len, i, n;
         if( dA ) {
             dA.parentNode.removeChild( dA );
+        };
+        if( localStorage.length === 0 ) {
+            autoFillData();
+            alert( "The localStorage object was empty; it has been filled with default data." );
         };
         resetErrors();
         makeDiv = document.createElement( "div" );
@@ -86,6 +108,9 @@ window.addEventListener( "DOMContentLoaded", function() {
             makeSubList.setAttribute( "class", "listing" );
             makeSubList.appendChild( linksLi );
             makeLi.appendChild( makeSubList );
+
+            getImage( makeSubList, obj.filetype[ 1 ]);
+
             for( n in obj ) {
                 makeSubLi = document.createElement( "li" );
                 makeSubLi.setAttribute( "class", "item" );
@@ -181,7 +206,6 @@ window.addEventListener( "DOMContentLoaded", function() {
         if( ask ) {
             alert( "Deleting " + this.key + "." );
             localStorage.removeItem( this.key );
-            loadData();
         }
         else {
             alert( this.key + " was not deleted." );
