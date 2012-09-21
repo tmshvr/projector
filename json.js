@@ -1,3 +1,6 @@
+// Project: Projector
+// Thomas Shaver
+// Term 1209
 var json = {
     "Projector_index.html": {
         "project": [ "Project:", "Projector" ],

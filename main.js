@@ -106,18 +106,16 @@ window.addEventListener( "DOMContentLoaded", function() {
             obj = JSON.parse( value );
             makeSubList = document.createElement( "ul" );
             makeSubList.setAttribute( "class", "listing" );
-            makeSubList.appendChild( linksLi );
             makeLi.appendChild( makeSubList );
-
             getImage( makeSubList, obj.filetype[ 1 ]);
-
             for( n in obj ) {
                 makeSubLi = document.createElement( "li" );
                 makeSubLi.setAttribute( "class", "item" );
                 makeSubList.appendChild( makeSubLi );
-                optSubText = toTitleCase( obj[ n ][ 0 ] ) + ": " + obj[ n ][ 1 ];
+                optSubText = toTitleCase( obj[ n ][ 0 ] ) + " " + obj[ n ][ 1 ];
                 makeSubLi.innerHTML = optSubText;
             };
+            makeSubList.appendChild( linksLi );
             makeItemLinks( localStorage.key(i), linksLi );
         };
         $( "formarea" ).style.display = "none";
@@ -149,6 +147,7 @@ window.addEventListener( "DOMContentLoaded", function() {
     };
 
     function makeItemLinks( key, linksLi ) {
+        var linkSpan = document.createElement( "span" );
         // Create a control to edit an item from the localStorage list.
         var editLink = document.createElement( "a" );
         editLink.href = "#";
@@ -156,11 +155,10 @@ window.addEventListener( "DOMContentLoaded", function() {
         var editText = "Edit File";
         editLink.addEventListener( "click", editItem );
         editLink.innerHTML = editText;
-        linksLi.appendChild( editLink );
+        linkSpan.appendChild( editLink );
 
         // Insert a break between the links so they won't be side-by-side.
-        var breakTag = document.createElement( "br" );
-        linksLi.appendChild( breakTag );
+        linkSpan.innerHTML += "\&nbsp;\&nbsp;";
 
         // Create a control to delete an item from the localStorage list.
         var deleteLink = document.createElement( "a" );
@@ -169,7 +167,9 @@ window.addEventListener( "DOMContentLoaded", function() {
         var deleteText = "Delete File";
         deleteLink.addEventListener( "click", deleteItem );
         deleteLink.innerHTML = deleteText;
-        linksLi.appendChild( deleteLink );
+        linkSpan.appendChild( deleteLink );
+
+        linksLi.appendChild( linkSpan );
     };
 
     function editItem() {
