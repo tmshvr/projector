@@ -28,6 +28,10 @@ h2 {
     );
 }
 
+h3 {
+    font-size: 0.95em;
+}
+
 a {
     color: #9900CC;
 }
@@ -52,11 +56,6 @@ ul {
 }
 
 
-article section ul li img {
-    padding-left: 0.6em;
-    padding-right: 0.6em;
-}
-
 input[type="submit"] {
     border: 0.2em solid rgba( 100, 50, 75, 0.5 );
     background: #229;
@@ -66,6 +65,15 @@ input[type="submit"] {
         rgba( 130, 120, 150, 0.25 ) 65%,
         rgba( 200, 200, 230, 0.25 ) 95%
     );
+}
+
+.cta {
+    background: -webkit-linear-gradient(
+        #FFF 30%,
+        rgba( 120, 120, 150, 0.25 ) 65%,
+        rgba( 200, 200, 230, 0.25 ) 95%
+    );
+    height: auto;
 }
 
 .chunk {

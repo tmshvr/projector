@@ -19,7 +19,7 @@
 <body>
     <article class="chunk">
         <section class="chunk">
-            <header>
+            <header class="chunk">
                 <hgroup>
                     <h1>Projector</h1>
                     <h2>A simple program planning web-app.</h2>
@@ -30,40 +30,35 @@
             <nav>
                 <ul>
                     <li>
+                        <img class="cta" src="images/logo.png" alt="">
+                    </li>
+                    <li>
                         <a href="addItem.html">Add Item</a>
+                    </li>
+                    <li>
+                    <h3>Plan your programming project in your browser.</h3>
                     </li>
                 </ul>
             </nav>
         </section>
     </article>
-    <br /><br />
     <article class="chunk">
         <section>
-            <ul>
-                <li>
-                    <img src="images/htmlIcon.png" width="80px" height="auto">
-                    <img src="images/cssIcon.png" width="80px" height="auto">
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <img src="images/javascriptIcon.png" width="80px" height="auto">
-                    <img src="images/phpIcon.png" width="80px" height="auto">
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <img src="images/videoIcon.png" width="80px" height="auto">
-                    <img src="images/mysqlIcon.png" width="80px" height="auto">
-                </li>
-            </ul>
-            <ul>
-                <li>
-                <img src="images/audioIcon.png" width="80px" height="auto">
-                <img src="images/graphicIcon.png" width="80px" height="auto">
-                </li>
-            </ul>
+            <fieldset class="chunk">
+                <legend>Search:</legend>
+                <input type="text" id="query" name="query" />
+                <input type="submit" id="search" value="Search" />
+            </fieldset>
+        </section>
+        <section>
+            <fieldset class="chunk">
+                <legend>Categories:</legend>
+                        <a href="#" id="Client">Client</a>
+                        <a href="#" id="Server">Server</a>
+                        <a href="#" id="Media">Media</a>
+                    </li>
+            </fieldset>
         </section>
     </article>
-    </section></body>
+</body>
 </html>
