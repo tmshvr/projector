@@ -312,11 +312,11 @@ window.addEventListener( "DOMContentLoaded", function() {
             case "off":
                 $( "formarea" ).style.display = "none";
                 $( "load" ).style.display = "none";
-                $( "back" ).style.display = "";
+                $( "back" ).style.display = "inline";
                 break;
             case "on":
-                $( "formarea" ).style.display = "";
-                $( "load" ).style.display = "";
+                $( "formarea" ).style.display = "inline";
+                $( "load" ).style.display = "inline";
                 $( "back" ).style.display = "none";
                 var dA = $( "displayArea" );
                 if( dA ) {
