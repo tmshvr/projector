@@ -1,6 +1,5 @@
 /* Project: Projector */
 /* Thomas Shaver */
-/* Term 1209 */
 body {
     background: #EBEFED;
     background: -webkit-linear-gradient(
@@ -13,7 +12,8 @@ body {
 }
 
 h1 {
-    font-size: 1.6em;
+    display: inline-block;
+    font-size: 1.4em;
 }
 
 h2 {
@@ -29,11 +29,19 @@ h2 {
 }
 
 h3 {
-    font-size: 0.95em;
+    width: 15em;
+    font-size: 0.9em;
 }
 
 a {
     color: #9900CC;
+}
+
+ul {
+    line-height: 0.94em;
+    margin-top: 0.5em;
+    margin-bottom: 0.75em;
+    list-style: none;
 }
 
 fieldset {
@@ -48,14 +56,6 @@ fieldset {
     margin-left: -1.4em;
 }
 
-ul {
-    line-height: 0.94em;
-    margin-top: 0.5em;
-    margin-bottom: 0.75em;
-    list-style: none;
-}
-
-
 input[type="submit"] {
     border: 0.2em solid rgba( 100, 50, 75, 0.5 );
     background: #229;
@@ -65,21 +65,6 @@ input[type="submit"] {
         rgba( 130, 120, 150, 0.25 ) 65%,
         rgba( 200, 200, 230, 0.25 ) 95%
     );
-}
-
-.cta {
-    background: -webkit-linear-gradient(
-        #FFF 30%,
-        rgba( 120, 120, 150, 0.25 ) 65%,
-        rgba( 200, 200, 230, 0.25 ) 95%
-    );
-    height: auto;
-}
-
-.chunk {
-    width: 15em;
-    text-align: center;
-    margin-left: 1em;
 }
 
 .listing {
@@ -106,6 +91,54 @@ input[type="submit"] {
     line-height: 0.9em;
     margin-top: 0.4em;
     margin-bottom: 0.3em;
+}
+
+.edits {
+    background: -webkit-linear-gradient(
+        #FFF 30%,
+        #BBB 60%,
+        #CCC 85%
+    );
+    width: 9em;
+    margin-left: 2em;
+    margin-top: 1em;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    text-align: center;
+}
+
+#mainMenu {
+    margin-left: 3em;
+}
+
+#data {
+    margin-left: 0.5em;
+}
+
+#head {
+    float: left;
+    margin-top: -1em;
+    margin-left: -0.7em;
+}
+
+#cta {
+    display: inline-block;
+    margin-top: -1em;
+    margin-left: -3em;
+    margin-bottom: 0.5em;
+    width: 240px;
+    height: auto;
+}
+
+#logo {
+    padding-top: 0.5em;
+    display: inline;
+    height: 2em;
+}
+
+
+#add {
+    margin-right: 3em;
 }
 
 #errors {

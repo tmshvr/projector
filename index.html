@@ -1,4 +1,4 @@
-<!-- Project: Projector     Thomas Shaver       Term 1209 -->
+<!-- Project: Projector     Thomas Shaver -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,12 +17,12 @@
     <title>Projector</title>
 </head>
 <body>
-    <article class="chunk">
-        <section class="chunk">
-            <header class="chunk">
+    <article>
+        <section>
+            <header id="head">
                 <hgroup>
+                    <img src="images/logo.png" id="logo" alt="Projector Logo.">
                     <h1>Projector</h1>
-                    <h2>A simple program planning web-app.</h2>
                 </hgroup>
             </header>
         </section>
@@ -30,28 +30,28 @@
             <nav>
                 <ul>
                     <li>
-                        <img class="cta" src="images/logo.png" alt="">
+                        <img src="images/cta.png" id="cta" />
                     </li>
                     <li>
-                        <a href="addItem.html">Add Item</a>
+                        <a id="add" href="addItem.html">Add Item</a>
                     </li>
                     <li>
-                    <h3>Plan your programming project in your browser.</h3>
+                    <h3>Plan programming projects dynamically, in your browser.</h3>
                     </li>
                 </ul>
             </nav>
         </section>
     </article>
-    <article class="chunk">
+    <article id="mainMenu">
         <section>
-            <fieldset class="chunk">
+            <fieldset>
                 <legend>Search:</legend>
                 <input type="text" id="query" name="query" />
                 <input type="submit" id="search" value="Search" />
             </fieldset>
         </section>
         <section>
-            <fieldset class="chunk">
+            <fieldset>
                 <legend>Categories:</legend>
                         <a href="#" id="Client">Client</a>
                         <a href="#" id="Server">Server</a>

@@ -1,20 +1,20 @@
 // Project: Projector
 // Thomas Shaver
-// Term 1209
 window.addEventListener( "DOMContentLoaded", function() {
-    // Get element by ID alias.
-    function ge( x ) {
-        return document.getElementById( x );
-    }
 
     // Global variables.
     var fileTypes = [ "HTML", "CSS", "JavaScript", "PHP", "MySQL", "Audio", "Video", "Graphic" ],
         cTypeValue,
         filetypeValue,
         started = new Date(),
-        errMsg = ge( "errors" ),
-        linksLi;
+        errMsg = document.getElementById( "errors" );
 
+    // Get element by ID alias.
+    function ge( x ) {
+        return document.getElementById( x );
+    }
+
+    // Turn form and Load Data link off and Back link on, 
     function toggleControls( status ) {
         switch( status ) {
             case "off":
@@ -34,12 +34,15 @@ window.addEventListener( "DOMContentLoaded", function() {
         }
     }
 
+    function fakeEdit() {
+        alert( "Fake edit." );
+    }
+
     function goBack() {
         toggleControls( "on" );
     }
 
     function editItem() {
-        alert( "Editing item..." );
         var value = localStorage.getItem( this.key ); // The .key value from the editLink that was clicked.
         var item = JSON.parse( value );
 
@@ -80,7 +83,6 @@ window.addEventListener( "DOMContentLoaded", function() {
     }
 
     function makeItemLinks( key, linksLi ) {
-        var linkSpan = document.createElement( "span" );
         // Create a control to edit an item from the localStorage list.
         var editLink = document.createElement( "a" );
         editLink.href = "#";
@@ -88,10 +90,12 @@ window.addEventListener( "DOMContentLoaded", function() {
         var editText = "Edit File";
         editLink.addEventListener( "click", editItem );
         editLink.innerHTML = editText;
-        linkSpan.appendChild( editLink );
+        linksLi.appendChild( editLink );
 
         // Insert a break between the links so they won't be side-by-side.
-        linkSpan.innerHTML += "&nbsp;&nbsp;";
+        var spacer = document.createElement( "span" );
+        spacer.innerHTML = "&nbsp;&nbsp;";
+        linksLi.appendChild( spacer );
 
         // Create a control to delete an item from the localStorage list.
         var deleteLink = document.createElement( "a" );
@@ -100,9 +104,7 @@ window.addEventListener( "DOMContentLoaded", function() {
         var deleteText = "Delete File";
         deleteLink.addEventListener( "click", deleteItem );
         deleteLink.innerHTML = deleteText;
-        linkSpan.appendChild( deleteLink );
-
-        linksLi.appendChild( linkSpan );
+        linksLi.appendChild( deleteLink );
     }
 
     function resetErrors() {
@@ -212,7 +214,8 @@ window.addEventListener( "DOMContentLoaded", function() {
         for( i = 0, len = localStorage.length; i < len; i++ ) {
             makeLi = document.createElement( "li" );
             makeList.appendChild( makeLi );
-            linksLi = document.createElement( "ul" );
+            var linksLi = document.createElement( "li" );
+            linksLi.setAttribute( "class", "edits" );
             key = localStorage.key( i );
             value = localStorage.getItem( key );
             obj = JSON.parse( value );
@@ -227,12 +230,10 @@ window.addEventListener( "DOMContentLoaded", function() {
                 optSubText = toTitleCase( obj[ n ][ 0 ] ) + " " + obj[ n ][ 1 ];
                 makeSubLi.innerHTML = optSubText;
             }
-            makeSubList.appendChild( linksLi );
             makeItemLinks( localStorage.key( i ), linksLi );
+            makeSubList.appendChild( linksLi );
         }
-        ge( "formarea" ).style.display = "none";
-        ge( "load" ).style.display = "none";
-        ge( "back" ).style.display = "inline";
+        toggleControls( "off" );
     }
 
     // Store form data in localStorage.
@@ -378,3 +379,4 @@ window.addEventListener( "DOMContentLoaded", function() {
     ge( "save" ).addEventListener( "click", validate );
     ge( "clear" ).addEventListener( "click", clearData );
 });
+
